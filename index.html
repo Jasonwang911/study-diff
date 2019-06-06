@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <div id="root"></div>
+    <button id="change-dom">改变dom</button>
+
+
+    <script src="https://cdn.bootcss.com/snabbdom/0.7.3/snabbdom.js"></script>
+    <script src="https://cdn.bootcss.com/snabbdom/0.7.3/snabbdom-class.js"></script>
+    <script src="https://cdn.bootcss.com/snabbdom/0.7.3/snabbdom-props.js"></script>
+    <script src="https://cdn.bootcss.com/snabbdom/0.7.3/snabbdom-style.js"></script>
+    <script src="https://cdn.bootcss.com/snabbdom/0.7.3/snabbdom-eventlisteners.js"></script>
+    <script src="https://cdn.bootcss.com/snabbdom/0.7.3/h.js"></script>
+    <script>
+        var snabbdom = window.snabbdom
+
+        // 定义 patch 函数
+        var patch = snabbdom.init({
+            snabbdom_class,
+            snabbdom_props,
+            snabbdom_style,
+            snabbdom_eventlisteners
+        })
+
+        // 定义 h
+        var h = snabbdom.h
+
+        // 原始数据  
+        var data = [
+            {
+                name: '浪魁',
+                age: 60,
+                address: '磁县'
+            },
+            {
+                name: '浪明',
+                age: 16,
+                address: '磁州'
+            },
+        ]
+        
+        // 添加表头
+        data.unshift({
+            name: '姓名',
+            age: '年龄',
+            address: '地址'
+        })
+
+        var container = document.getElementById('root')
+        var btn = document.getElementById('change-dom')
+
+        // 渲染函数
+        var vnode
+        function render(data) {
+            var newVnode = h('table', {}, data.map(function(item) {
+                var tds = []
+                for(var i in item) {
+                    if(item.hasOwnProperty(i)) {
+                        tds.push(h('td', {}, item[i] + ''))
+                    }
+                }
+                return h('tr', {}, tds)
+            }))
+            console.log(newVnode)
+            if(vnode) {
+                //  初次渲染
+                patch(vnode, newVnode)
+            }else {
+                // re-render
+                patch(container, newVnode)
+            }
+
+            vnode = newVnode
+        }
+
+        // 第一次渲染
+        render(data);
+
+        btn.addEventListener('click', function() {
+            data[1].age = 99
+            data[2].address = '庄里'
+            render(data)
+        })
+    </script>
+</body>
+</html>

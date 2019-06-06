@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <div id="root"></div>
+    <button id="change-dom">改变dom</button>
+
+
+    <script src="https://cdn.bootcss.com/snabbdom/0.7.3/snabbdom.js"></script>
+    <script src="https://cdn.bootcss.com/snabbdom/0.7.3/snabbdom-class.js"></script>
+    <script src="https://cdn.bootcss.com/snabbdom/0.7.3/snabbdom-props.js"></script>
+    <script src="https://cdn.bootcss.com/snabbdom/0.7.3/snabbdom-style.js"></script>
+    <script src="https://cdn.bootcss.com/snabbdom/0.7.3/snabbdom-eventlisteners.js"></script>
+    <script src="https://cdn.bootcss.com/snabbdom/0.7.3/h.js"></script>
+    <script>
+        var snabbdom = window.snabbdom
+
+        // 定义 patch 函数
+        var patch = snabbdom.init({
+            snabbdom_class,
+            snabbdom_props,
+            snabbdom_style,
+            snabbdom_eventlisteners
+        })
+
+        // 定义 h
+        var h = snabbdom.h
+
+        var container = document.getElementById('root');
+
+        // 生成 vnode
+        var vnode = h('ul#list', {}, [
+            h('li.item', {}, 'Item 1'),
+            h('li.item', {}, 'Item 2'),
+        ])
+
+        patch(container, vnode)
+
+        document.getElementById('change-dom').addEventListener('click', function() {
+            var newVnode = h('ul#list', {}, [
+                h('li.item', {}, 'Item 1'),
+                h('li.item', {}, 'Item B'),
+                h('li.item', {}, 'Item C'),
+            ])
+            patch(vnode, newVnode)
+        })
+    </script>
+</body>
+</html>
